@@ -1,4 +1,4 @@
-# OpenAPI and GRPC
+# OpenAPI
 
 ## 1. Overview of OpenAPI
 ### API: Application Programming Interface
@@ -67,3 +67,59 @@
                         description: OK
     ```
 - [Thông tin thêm về Path Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#paths-object)
+
+## 3. Define HTTP verbs
+## GET
+
+```
+get:
+   parameters:
+   summary:
+   description:
+   tags:
+   operationId:
+   response:
+      '201':
+         description:
+         content:
+            application/json:
+               schema: <define schema>
+      
+```
+
+## POST and PUT
+```
+post:
+   parameters:
+   summary:
+   description:
+   tags:
+   operationId:
+   requestBody:
+      required:true
+      content:
+         application/json:
+            schema: <define schema>
+   response:
+      '201':
+         description:
+         content:
+            application/json:
+               schema: <define schema>
+```
+
+## Delete:
+```
+delete:
+   parameters:
+   summary:
+   description:
+   tags:
+   operationId:
+   response:
+      '201':
+         description:
+         content:
+            application/json:
+               schema: <define schema>
+```
