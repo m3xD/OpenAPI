@@ -1,0 +1,485 @@
+{
+  "openapi" : "3.0.2",
+  "info" : {
+    "version" : "1.0",
+    "title" : "OpenAPI Course",
+    "description" : "Specification for OpenAPI Course",
+    "termsOfService" : "https://example.com/terms/",
+    "contact" : {
+      "name" : "Duy Khanh",
+      "url" : "https//:github.com/m3xd"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "https://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "servers" : [ {
+    "url" : "https://qa.example.com",
+    "description" : "QA"
+  }, {
+    "url" : "https://prod.example.com",
+    "description" : "Production"
+  } ],
+  "paths" : {
+    "/v1/customers" : {
+      "get" : {
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/PageNumberParameter"
+        }, {
+          "$ref" : "#/components/parameters/PageSizeParameter"
+        } ],
+        "summary" : "Get list customers",
+        "description" : "get all customers",
+        "tags" : [ "Customers" ],
+        "operationId" : "listCustomersV1",
+        "responses" : {
+          "200" : {
+            "description" : "List all customers",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CustomerPagedList"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "summary" : "New Customer",
+        "description" : "Create a new customer",
+        "tags" : [ "Customer" ],
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Customer"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Customer Created",
+            "headers" : {
+              "Location" : {
+                "description" : "Location of the created customer",
+                "schema" : {
+                  "type" : "string",
+                  "format" : "uri",
+                  "example" : "http://example.com/v1/customer/{assignedIdValue}"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/beers" : {
+      "get" : {
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/PageNumberParameter"
+        }, {
+          "$ref" : "#/components/parameters/PageSizeParameter"
+        } ],
+        "summary" : "Get list beers",
+        "description" : "get all beers",
+        "tags" : [ "Beers" ],
+        "operationId" : "listBeersV1",
+        "responses" : {
+          "200" : {
+            "description" : "List all beers",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BeerList"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "404" : {
+            "description" : "Not found"
+          },
+          "409" : {
+            "description" : "Confilct"
+          }
+        }
+      },
+      "post" : {
+        "operationId" : "createBeer",
+        "description" : "Create a new beer",
+        "tags" : [ "Beers" ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Beer"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Beer is created",
+            "headers" : {
+              "Location" : {
+                "schema" : {
+                  "type" : "string",
+                  "format" : "uri",
+                  "example" : "http://example.com/v1/beer/{assignedIdValue}"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "404" : {
+            "description" : "Not found"
+          },
+          "409" : {
+            "description" : "Confilct"
+          }
+        }
+      }
+    },
+    "/v1/beers/{beersID}" : {
+      "get" : {
+        "parameters" : [ {
+          "name" : "beersID",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "uuid"
+          }
+        } ],
+        "summary" : "Get beer by ID",
+        "description" : "get a single beer by ID",
+        "tags" : [ "Beers" ],
+        "operationId" : "getBeerbyIDV1",
+        "responses" : {
+          "200" : {
+            "description" : "Get Beers through ID",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BeerList"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "404" : {
+            "description" : "Not found"
+          },
+          "409" : {
+            "description" : "Confilct"
+          }
+        }
+      },
+      "put" : {
+        "parameters" : [ {
+          "name" : "beersID",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "uuid"
+          }
+        } ],
+        "tags" : [ "Beers" ],
+        "operationId" : "updateBeer",
+        "description" : "Update a beer",
+        "requestBody" : {
+          "content" : {
+            "applicaiton/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Beer"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "204" : {
+            "description" : "Beer is updated",
+            "headers" : {
+              "Location" : {
+                "schema" : {
+                  "type" : "string",
+                  "format" : "uri"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "404" : {
+            "description" : "Not found"
+          },
+          "409" : {
+            "description" : "Confilct"
+          }
+        }
+      },
+      "delete" : {
+        "parameters" : [ {
+          "name" : "beersID",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "uuid"
+          }
+        } ],
+        "tags" : [ "Beers" ],
+        "operationId" : "deleteBeer",
+        "description" : "Delete a beer",
+        "responses" : {
+          "200" : {
+            "description" : "Beer is deleted"
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "404" : {
+            "description" : "Not found"
+          },
+          "409" : {
+            "description" : "Confilct"
+          }
+        }
+      }
+    }
+  },
+  "security" : [ {
+    "BasicAuth" : [ ]
+  } ],
+  "components" : {
+    "securitySchemes" : {
+      "BasicAuth" : {
+        "type" : "http",
+        "scheme" : "basic"
+      }
+    },
+    "parameters" : {
+      "PageNumberParameter" : {
+        "name" : "pageNumber",
+        "in" : "query",
+        "description" : "Page Number",
+        "schema" : {
+          "type" : "integer",
+          "format" : "int32",
+          "default" : 1
+        }
+      },
+      "PageSizeParameter" : {
+        "name" : "pageSize",
+        "in" : "query",
+        "description" : "Page Size",
+        "schema" : {
+          "type" : "integer",
+          "format" : "int32",
+          "default" : 25
+        }
+      }
+    },
+    "schemas" : {
+      "Address" : {
+        "type" : "object",
+        "properties" : {
+          "line1" : {
+            "type" : "string",
+            "example" : "123 main"
+          },
+          "city" : {
+            "type" : "string",
+            "example" : "St Pete"
+          },
+          "stateCode" : {
+            "maxLength" : 2,
+            "minLength" : 2,
+            "type" : "string",
+            "description" : "2 Letter State Code",
+            "enum" : [ "AL", "AK", "AZ", "AR", "CA" ]
+          },
+          "zipCode" : {
+            "type" : "string",
+            "example" : "33701"
+          }
+        }
+      },
+      "Customer" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "uuid",
+            "readOnly" : true
+          },
+          "firstName" : {
+            "maxLength" : 100,
+            "minLength" : 2,
+            "type" : "string",
+            "example" : "John"
+          },
+          "lastName" : {
+            "maxLength" : 100,
+            "minLength" : 2,
+            "type" : "string",
+            "example" : "Thompson"
+          },
+          "address" : {
+            "$ref" : "#/components/schemas/Address"
+          }
+        },
+        "description" : "customer object"
+      },
+      "CustomerList" : {
+        "maxItems" : 100,
+        "minItems" : 1,
+        "type" : "array",
+        "description" : "List of Customers",
+        "items" : {
+          "$ref" : "#/components/schemas/Customer"
+        }
+      },
+      "CustomerPagedList" : {
+        "type" : "object",
+        "properties" : {
+          "schemas" : {
+            "$ref" : "#/components/schemas/CustomerList"
+          }
+        },
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/PagedResponse"
+        } ]
+      },
+      "Brewery" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "location" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Beer" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "style" : {
+            "type" : "string",
+            "enum" : [ "ALE", "PALE_ALE", "IPA", "WHEAT", "LAGER" ]
+          },
+          "upc" : {
+            "type" : "string"
+          },
+          "price" : {
+            "type" : "number",
+            "format" : "float"
+          },
+          "quantity" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "brewery" : {
+            "$ref" : "#/components/schemas/Brewery"
+          }
+        }
+      },
+      "BeerList" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/Beer"
+        }
+      },
+      "PagedResponse" : {
+        "type" : "object",
+        "properties" : {
+          "pageable" : {
+            "$ref" : "#/components/schemas/PagedResponse_pageable"
+          },
+          "totalPages" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "last" : {
+            "type" : "boolean"
+          },
+          "totalElements" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "size" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "number" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "numberOfElements" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "sort" : {
+            "$ref" : "#/components/schemas/PagedResponse_pageable_sort"
+          },
+          "first" : {
+            "type" : "boolean"
+          }
+        }
+      },
+      "PagedResponse_pageable_sort" : {
+        "type" : "object",
+        "properties" : {
+          "sorted" : {
+            "type" : "boolean"
+          },
+          "unsorted" : {
+            "type" : "boolean"
+          }
+        }
+      },
+      "PagedResponse_pageable" : {
+        "type" : "object",
+        "properties" : {
+          "sort" : {
+            "$ref" : "#/components/schemas/PagedResponse_pageable_sort"
+          },
+          "offset" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "pageNumber" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "pageSize" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "paged" : {
+            "type" : "boolean"
+          },
+          "unpaged" : {
+            "type" : "boolean"
+          }
+        }
+      }
+    }
+  }
+}
